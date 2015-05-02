@@ -1,0 +1,38 @@
+{
+  "name": "tiler-contrib-line-chart-tile",
+  "version": "0.1.0",
+  "description": "NumberTile for the tiler framework",
+  "keywords": [
+    "dashboard",
+    "information",
+    "radiator",
+    "react"
+  ],
+  "homepage": "https://github.com/tiler-project/node-tiler-contrib-line-chart-tile",
+  "license": "MIT",
+  "author": {
+    "name": "Simon Dean",
+    "email": "simon@simondean.org",
+    "url": "http://www.simondean.org"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiler-project/node-tiler-contrib-line-chart-tile.git"
+  },
+  "scripts": {
+    "test": "gulp build"
+  },
+  "dependencies": {
+    "chart.js": "^1.0.2",
+    "react-chartjs": "^0.5.0"
+  },
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-bump": "^0.3.0",
+    "gulp-changed": "^1.2.1",
+    "gulp-react": "^3.0.1",
+    "run-sequence": "^1.1.0"
+  }
+}
