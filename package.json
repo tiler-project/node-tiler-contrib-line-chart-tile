@@ -1,7 +1,7 @@
 {
   "name": "tiler-contrib-line-chart-tile",
   "version": "0.1.0",
-  "description": "NumberTile for the tiler framework",
+  "description": "LineChartTile for the tiler framework",
   "keywords": [
     "dashboard",
     "information",
