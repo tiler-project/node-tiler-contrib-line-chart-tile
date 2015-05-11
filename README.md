@@ -1,1 +1,1 @@
-# tiler-contrib-line-chart
+# tiler-contrib-line-chart-tile

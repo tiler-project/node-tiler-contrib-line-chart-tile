@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react');
 var LineChart = require("react-chartjs").Line;
 
