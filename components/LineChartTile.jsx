@@ -99,9 +99,29 @@ module.exports = React.createClass({
       });
 
       // TODO: Support more than just printing the year, month and day of the timestamp
+      var lastDateString = null;
+
       labels = labels.map(function(timestamp) {
         var date = new Date(timestamp / 1000);
-        return ('0000' + date.getFullYear()).slice(-4) + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
+        var dateString = ('0000' + date.getFullYear()).slice(-4) + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
+        var timeString = ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2);
+        var label = '';
+
+        if (dateString != lastDateString) {
+          label = dateString;
+        }
+
+        lastDateString = dateString;
+
+        if (timeString != '00:00') {
+          if (label.length > 0) {
+            label += ' ';
+          }
+
+          label += timeString;
+        }
+
+        return label;
       });
 
       var chartOptions = {
