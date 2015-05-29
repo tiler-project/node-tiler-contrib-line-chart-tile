@@ -5,6 +5,7 @@ var LineChart = require("react-chartjs").Line;
 
 module.exports = React.createClass({
   render: function() {
+    var self = this;
     var styles = {
       container: {
         color: '#ffffff',
@@ -13,6 +14,9 @@ module.exports = React.createClass({
         boxSizing: 'border-box',
         paddingLeft: '0.5em',
         paddingRight: '0.5em'
+      },
+      title: {
+        textAlign: 'center'
       },
       chart: {
         width: '100%',
@@ -26,8 +30,10 @@ module.exports = React.createClass({
       }
     };
 
+    var title = (typeof self.props.title === 'undefined') ? undefined : <div key={'title'} style={styles.title}>{self.props.title}</div>;
+
     var chart;
-    var metrics = this.props.metrics;
+    var metrics = self.props.metrics;
 
     if (metrics && metrics.length > 0) {
       console.log('Creating chart for ', metrics);
@@ -162,7 +168,7 @@ module.exports = React.createClass({
         );
       });
 
-      chart = (<div>
+      chart = (<div key={'chart'}>
         <LineChart data={chartData} options={chartOptions} style={styles.chart} />
         <ul style={styles.legendList}>
             {legend}
@@ -170,12 +176,22 @@ module.exports = React.createClass({
       </div>);
     }
     else {
-      chart = '';
+      chart = undefined;
+    }
+
+    var children = [];
+
+    if (title) {
+      children.push(title);
+    }
+
+    if (chart) {
+      children.push(chart);
     }
 
     return (
       <div style={styles.container}>
-        {chart}
+        {children}
       </div>
     );
   }
