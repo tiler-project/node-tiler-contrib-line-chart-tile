@@ -30,7 +30,9 @@ module.exports = React.createClass({
       }
     };
 
-    var title = (typeof self.props.title === 'undefined') ? undefined : <div key={'title'} style={styles.title}>{self.props.title}</div>;
+    var title = (typeof self.props.title === 'undefined') ?
+      undefined :
+      <div key={'title'} style={styles.title}>{self.props.title}</div>;
 
     var chart;
     var metrics = self.props.metrics;
@@ -104,28 +106,31 @@ module.exports = React.createClass({
         dataset.fillColor = colors[colorIndex].fillColor;
       });
 
-      // TODO: Support more than just printing the year, month and day of the timestamp
-      var lastDateString = null;
+      var lastDateLabel = undefined;
+      var lastHourMinuteSecondLabel = undefined;
 
       labels = labels.map(function(timestamp) {
         var date = new Date(timestamp / 1000);
-        var dateString = ('0000' + date.getFullYear()).slice(-4) + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
-        var timeString = ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2);
+        var dateLabel = ('0000' + date.getFullYear()).slice(-4) + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
+        var hourMinuteSecondLabel = ' ' + ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2) + ':' + ('00' + date.getSeconds()).slice(-2);
+        var millisecondLabel = '.' + ('000' + date.getMilliseconds()).slice(-3);
+
         var label = '';
 
-        if (dateString != lastDateString) {
-          label = dateString;
+        if (dateLabel != lastDateLabel) {
+          label += dateLabel;
         }
 
-        lastDateString = dateString;
+        if (hourMinuteSecondLabel != '00:00:00' || millisecondLabel != '.000') {
+          label += (label.length > 0 ? ' ' : '') + hourMinuteSecondLabel;
 
-        if (timeString != '00:00') {
-          if (label.length > 0) {
-            label += ' ';
+          if (hourMinuteSecondLabel == lastHourMinuteSecondLabel) {
+            label += millisecondLabel;
           }
-
-          label += timeString;
         }
+
+        lastDateLabel = dateLabel;
+        lastHourMinuteSecondLabel = hourMinuteSecondLabel;
 
         return label;
       });
@@ -133,7 +138,8 @@ module.exports = React.createClass({
       var chartOptions = {
         pointDotRadius: 4,
         pointHitDetectionRadius: 5,
-        multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>'
+        multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>',
+        animation: false
       };
 
       var chartData = {
@@ -164,12 +170,12 @@ module.exports = React.createClass({
         };
 
         return (
-          <li style={legendItemStyles.listItem}><span style={legendItemStyles.bullet}>&#xf068;</span> <span>{dataset.label}</span></li>
+          <li key={dataset.label} style={legendItemStyles.listItem}><span style={legendItemStyles.bullet}>&#xf068;</span> <span>{dataset.label}</span></li>
         );
       });
 
       chart = (<div key={'chart'}>
-        <LineChart data={chartData} options={chartOptions} style={styles.chart} />
+        <LineChart data={chartData} options={chartOptions} redraw style={styles.chart} />
         <ul style={styles.legendList}>
             {legend}
         </ul>
@@ -179,19 +185,10 @@ module.exports = React.createClass({
       chart = undefined;
     }
 
-    var children = [];
-
-    if (title) {
-      children.push(title);
-    }
-
-    if (chart) {
-      children.push(chart);
-    }
-
     return (
       <div style={styles.container}>
-        {children}
+        {title}
+        {chart}
       </div>
     );
   }
