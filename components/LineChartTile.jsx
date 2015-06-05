@@ -106,31 +106,34 @@ module.exports = React.createClass({
         dataset.fillColor = colors[colorIndex].fillColor;
       });
 
-      var lastDateLabel = undefined;
-      var lastHourMinuteSecondLabel = undefined;
+      var lastDateLabel = '';
 
       labels = labels.map(function(timestamp) {
         var date = new Date(timestamp / 1000);
         var dateLabel = ('0000' + date.getFullYear()).slice(-4) + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
-        var hourMinuteSecondLabel = ' ' + ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2) + ':' + ('00' + date.getSeconds()).slice(-2);
-        var millisecondLabel = '.' + ('000' + date.getMilliseconds()).slice(-3);
-
         var label = '';
 
         if (dateLabel != lastDateLabel) {
           label += dateLabel;
         }
 
-        if (hourMinuteSecondLabel != '00:00:00' || millisecondLabel != '.000') {
-          label += (label.length > 0 ? ' ' : '') + hourMinuteSecondLabel;
+        var hasMilliseconds = date.getMilliseconds() > 0;
+        var hasSecondsOrMilliseconds = date.getSeconds() > 0 || hasMilliseconds;
+        var hasHoursOrMinutesOrSecondsOrMilliseconds = date.getHours() > 0 || date.getMinutes() > 0 || hasSecondsOrMilliseconds;
 
-          if (hourMinuteSecondLabel == lastHourMinuteSecondLabel) {
-            label += millisecondLabel;
+        if (hasHoursOrMinutesOrSecondsOrMilliseconds) {
+          label += (label.length > 0 ? ' ' : '') + ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2);
+
+          if (hasSecondsOrMilliseconds) {
+            label += ':' + ('00' + date.getSeconds()).slice(-2);
+
+            if (hasMilliseconds) {
+              label += '.' + ('000' + date.getMilliseconds()).slice(-3);
+            }
           }
         }
 
         lastDateLabel = dateLabel;
-        lastHourMinuteSecondLabel = hourMinuteSecondLabel;
 
         return label;
       });
