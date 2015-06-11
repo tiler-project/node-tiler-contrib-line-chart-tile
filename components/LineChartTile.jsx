@@ -20,7 +20,7 @@ module.exports = React.createClass({
       },
       chart: {
         width: '100%',
-        height:'100%'
+        height: '100%'
       },
       legendList: {
         listStyleType: 'none',
@@ -142,7 +142,8 @@ module.exports = React.createClass({
         pointDotRadius: 4,
         pointHitDetectionRadius: 5,
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>',
-        animation: false
+        animation: false,
+        responsive: true
       };
 
       var chartData = {
