@@ -13,7 +13,8 @@ module.exports = React.createClass({
         height: '100%',
         boxSizing: 'border-box',
         paddingLeft: '0.5em',
-        paddingRight: '0.5em'
+        paddingRight: '0.5em',
+        overflowY: 'hidden'
       },
       title: {
         textAlign: 'center'
